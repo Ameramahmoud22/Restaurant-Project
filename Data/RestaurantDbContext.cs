@@ -31,6 +31,19 @@ namespace RestaurantSystem.Infrastructure.Data
                 .HasOne(o => o.Customer)
                 .WithMany()
                 .HasForeignKey(o => o.CustomerId);
+
+            // Configure decimal properties
+            modelBuilder.Entity<MenuItem>()
+                .Property(m => m.Price)
+                .HasPrecision(18, 2); // 18 total digits, 2 after decimal
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalAmount)
+                .HasPrecision(18, 2); // 18 total digits, 2 after decimal
+
+            modelBuilder.Entity<OrderItem>()
+                .Property(oi => oi.UnitPrice)
+                .HasPrecision(18, 2);
         }
     }
 }
