@@ -4,6 +4,7 @@ using RestaurantSystem.Infrastructure.Data;
 using RestaurantSystem.Interfaces;
 using RestaurantSystem.Services.Services;
 using RestaurantSystem.Services;
+using RestaurantSystem.API.Middleware;
 
 namespace RestaurantSystem
 {
@@ -36,6 +37,7 @@ namespace RestaurantSystem
             }
 
             app.UseHttpsRedirection();
+            app.UseExceptionMiddleware();
 
             app.UseAuthorization();
 
