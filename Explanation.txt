@@ -25,7 +25,7 @@ Finally : Simple Analogy
 *The waiter (your controller) just needs the menu (interface) to take orders, not the recipe.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
-                                                  Services
+                                                Services
  Added to a folder named Services in the RestaurantSystem.Services project.
 These classes (MenuService, OrderService) contain the business logic for your restaurant system, 
 interacting with the database via Entity Framework Core (EF Core) to manage menu items and orders .
@@ -41,7 +41,7 @@ Notes:
 8- Services are often injected into controllers using Dependency Injection (DI) to promote loose coupling and testability.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
-                                             Middlewares
+                                                Middlewares
 1- Middlewares are components in the ASP.NET Core pipeline that handle requests and responses.
 2-This one ensures that unhandled errors don’t crash your app and instead return a user-friendly JSON response.
 3- They can perform tasks like logging, authentication, or modifying requests before they reach the controller.
@@ -54,3 +54,23 @@ Notes:
 1- It simplifies adding your custom middleware.
 2- It allows you to call your middleware in a more readable way.
 3-Why Static?: Extension methods are static and placed in a static class, following .NET conventions for easy use.
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+                                                  Controllers
+1- Controllers are classes that handle incoming HTTP requests in an ASP.NET Core application.
+2- They are responsible for processing requests, interacting with services, and returning responses.
+3- Controllers are typically decorated with the [ApiController] attribute, which provides additional features like automatic model validation and response formatting.
+4- return responses. They act as the entry point for your API.
+5- Controllers contain action methods that respond to HTTP verbs like GET, POST, PUT, and DELETE.
+6- Action methods are decorated with attributes like [HttpGet], [HttpPost], etc., to specify the type of request they handle.
+7- Controllers can use Dependency Injection (DI) to access services, allowing them to perform business logic without directly interacting with the database.
+8- They can also return various types of responses, such as JSON, HTML, or status codes, depending on the request and the action method's logic.
+9-PI Endpoints: Controllers define the entry points for your API, making your restaurant system accessible via HTTP (ex: for a front-end app).
+Notes on implementation:
+ 1-controllername: ControllerBase, a base class for API controllers (without view support, unlike Controller for web apps).
+ 2-[Route("api/[controller]")]:
+Defines the base URL path for this controller. [controller] is a placeholder for the controller name (ex, Menu), so routes start with /api/Menu.
+ 3-[ApiController]: Marks this as an API controller, enabling features like automatic model validation and JSON responses.
+ 4- MenuController: Handles HTTP requests for menu items, like getting all items, fetching one by ID, or adding a new one.
+ 5-OrderController: Manages HTTP requests for orders, like creating a new order or retrieving an existing one by ID.
+ -----------------------------------------------------------------------------------------------------------------------------------------------
