@@ -1,10 +1,10 @@
-
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using RestaurantSystem.Infrastructure.Data;
-using RestaurantSystem.Interfaces;
-using RestaurantSystem.Services.Services;
-using RestaurantSystem.Services;
+using RestaurantSystem.Services.Services; 
 using RestaurantSystem.API.Middleware;
+using RestaurantSystem.Interfaces;
+using RestaurantSystem.Services;
 
 namespace RestaurantSystem
 {
@@ -15,40 +15,50 @@ namespace RestaurantSystem
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            //dependency injection for services (DI) => This tells the DI system: “When something needs a RestaurantDbContext, create and provide it.”
-            // This is a scoped service, meaning a new instance is created for each request.
-            builder.Services.AddDbContext<RestaurantDbContext>(options =>
-                   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Register services(interfaces) for dependency injection
+            // Dependency injection for DbContext
+            builder.Services.AddDbContext<RestaurantDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register services for dependency injection
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // Configure Swagger/OpenAPI
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "RestaurantSystem API",
+                    Version = "v1",
+                    Description = "API for managing the Restaurant System",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Your Name",
+                        Email = "your.email@example.com"
+                    }
+                });
+            });
 
             var app = builder.Build();
-
-
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantSystem API V1");
+                    c.RoutePrefix = string.Empty; // Open Swagger UI at root (e.g., https://localhost:<port>/)
+                });
             }
 
-            app.UseHttpsRedirection();
             app.UseExceptionMiddleware();
-
+            app.UseHttpsRedirection();
             app.UseAuthorization();
-
-
             app.MapControllers();
-            app.MapGet("/", () => "RestaurantSystem API is running.");
 
             app.Run();
         }
