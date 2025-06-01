@@ -17,9 +17,12 @@ namespace RestaurantSystem
             // Add services to the container.
 
             builder.Services.AddControllers();
+            //dependency injection for services (DI) => This tells the DI system: “When something needs a RestaurantDbContext, create and provide it.”
+            // This is a scoped service, meaning a new instance is created for each request.
             builder.Services.AddDbContext<RestaurantDbContext>(options =>
                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Register services(interfaces) for dependency injection
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
 
@@ -28,6 +31,8 @@ namespace RestaurantSystem
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -43,6 +48,7 @@ namespace RestaurantSystem
 
 
             app.MapControllers();
+            app.MapGet("/", () => "RestaurantSystem API is running.");
 
             app.Run();
         }
