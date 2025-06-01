@@ -39,3 +39,18 @@ Notes:
 6- Services are typically used by controllers to handle requests and return responses.
 7- They can also include additional logic, such as validation or error handling.
 8- Services are often injected into controllers using Dependency Injection (DI) to promote loose coupling and testability.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+                                             Middlewares
+1- Middlewares are components in the ASP.NET Core pipeline that handle requests and responses.
+2-This one ensures that unhandled errors don’t crash your app and instead return a user-friendly JSON response.
+3- They can perform tasks like logging, authentication, or modifying requests before they reach the controller.
+4- Middlewares are added to the pipeline in the program.cs file using the Configure method.
+5- Middlewares can be ordered, meaning the order in which they are added affects how requests are processed.
+6- They can also be used to modify the response before it is sent back to the client.
+7- Middlewares can access the request and response objects, allowing them to read or modify headers, body, or other properties.
+                            
+                                        Extension Method: 
+1- It simplifies adding your custom middleware.
+2- It allows you to call your middleware in a more readable way.
+3-Why Static?: Extension methods are static and placed in a static class, following .NET conventions for easy use.
