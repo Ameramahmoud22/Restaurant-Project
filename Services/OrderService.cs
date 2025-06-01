@@ -4,10 +4,14 @@ using RestaurantSystem.Models;
 using RestaurantSystem.Infrastructure.Data;
 namespace RestaurantSystem.Services
 {
+
+    // Purpose: Implements operations for handling orders, such as creating and retrieving orders.
     public class OrderService : IOrderService
     {
         private readonly RestaurantDbContext _context;
 
+
+        //Constructor: uses DI to get the RestaurantDbContext
         public OrderService(RestaurantDbContext context)
         {
             _context = context;

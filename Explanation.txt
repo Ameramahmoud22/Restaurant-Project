@@ -1,21 +1,21 @@
+                           Interfaces
+           
 Interfaces: What Are They?
 1- An interface is like a contract. 
 2- It lists methods (actions) that a class must implement, but it doesn’t say how to do them.
 3- It’s a blueprint of “what” needs to be done, not “how.”
 4- In C#, interfaces often start with I (for example:  IMenuService) to show they’re interfaces.
-
-               ------------------------------------------------------------
-Separation:
-   * Interfaces define “what” to do, 
-   * while classes in RestaurantSystem.
- Note :  Services will define “how” (for example : using a database).
-
-
 5-  These interfaces set rules,
    so any class that implements them must follow these rules.
 
 for example : Any class that implements IMenuService must provide code for:
          [GetAllMenuItemsAsync, GetMenuItemByIdAsync, and AddMenuItemAsync], and so on for the other interfaces.
+
+Separation:
+   * Interfaces define “what” to do, 
+   * while classes in RestaurantSystem.
+ Note :  Services will define “how” (for example : using a database).
+
 
 
 Finally : Simple Analogy
@@ -23,3 +23,19 @@ Finally : Simple Analogy
 *It says, “We offer these dishes: burgers, pizza, etc.” (the methods).
 *The kitchen (a class like MenuService) decides how to cook them.
 *The waiter (your controller) just needs the menu (interface) to take orders, not the recipe.
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+                                                  Services
+ Added to a folder named Services in the RestaurantSystem.Services project.
+These classes (MenuService, OrderService) contain the business logic for your restaurant system, 
+interacting with the database via Entity Framework Core (EF Core) to manage menu items and orders .
+
+Notes:
+1- Services are classes that implement the interfaces.
+2- They contain the actual code that does the work defined by the interfaces.
+3- For example, MenuService implements IMenuService and provides the code for methods like GetAllMenuItemsAsync.
+4- Services are where the real logic happens, like fetching data from a database or processing orders.
+5- They are responsible for the "how" part of the operations defined in the interfaces.
+6- Services are typically used by controllers to handle requests and return responses.
+7- They can also include additional logic, such as validation or error handling.
+8- Services are often injected into controllers using Dependency Injection (DI) to promote loose coupling and testability.
