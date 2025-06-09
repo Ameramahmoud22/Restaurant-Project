@@ -10,5 +10,9 @@ namespace RestaurantSystem.Interfaces
         Task<List<MenuItem>> GetAllMenuItemsAsync(); //return a list of all menu items
         Task<MenuItem> GetMenuItemByIdAsync(int id); //return a specific menu item by its ID
         Task AddMenuItemAsync(MenuItem menuItem); //add a new menu item
+
+        Task UpdateMenuItemAsync(MenuItem menuItem); //update an existing menu item
+        Task DeleteMenuItemAsync(int id); //delete a menu item by its ID
+
     }
 }
