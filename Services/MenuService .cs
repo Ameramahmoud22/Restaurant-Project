@@ -46,5 +46,22 @@ namespace RestaurantSystem.Services.Services
             _context.MenuItems.Remove(menuItem);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<MenuItem>> SearchMenuItemsAsync(string? category, string? name, bool? isAvailable)
+        {
+            var query = _context.MenuItems.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+                query = query.Where(m => m.Category == category);
+
+            if (!string.IsNullOrEmpty(name))
+                query = query.Where(m => m.Name.Contains(name));
+
+            if (isAvailable.HasValue)
+                query = query.Where(m => m.IsAvailable == isAvailable.Value);
+
+            return await query.ToListAsync();
+        }
+
     }
 }
