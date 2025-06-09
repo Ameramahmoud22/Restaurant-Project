@@ -56,5 +56,13 @@ namespace RestaurantSystem.API.Controllers
             await _menuService.DeleteMenuItemAsync(id); // Delete the menu item by ID
             return NoContent(); // Return 204 No Content to indicate success without returning any content
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string? category, [FromQuery] string? name, [FromQuery] bool? isAvailable)
+        {
+            var results = await _menuService.SearchMenuItemsAsync(category, name, isAvailable);
+            return Ok(results);
+        }
+
     }
 }
