@@ -25,6 +25,7 @@ namespace RestaurantSystem
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<IReservationService, ReservationService>();
 
 
             // Configure Swagger/OpenAPI
