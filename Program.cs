@@ -24,6 +24,8 @@ namespace RestaurantSystem
             // Register services for dependency injection
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 
             // Configure Swagger/OpenAPI
             builder.Services.AddEndpointsApiExplorer();
