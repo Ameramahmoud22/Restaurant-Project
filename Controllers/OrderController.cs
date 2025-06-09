@@ -28,5 +28,22 @@ namespace RestaurantSystem.API.Controllers
             var order = await _orderService.GetOrderByIdAsync(id);
             return Ok(order);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Order order)
+        {
+            if (id != order.Id)
+            {
+                return BadRequest("Order ID mismatch.");
+            }
+            var updatedOrder = await _orderService.CreateOrderAsync(order);
+            return Ok(updatedOrder);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _orderService.DeleteOrderAsync(id);
+            return NoContent();
+        }
     }
 }

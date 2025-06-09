@@ -34,5 +34,44 @@ namespace RestaurantSystem.Services
                 .ThenInclude(oi => oi.MenuItem)
                 .FirstOrDefaultAsync(o => o.Id == id) ?? throw new Exception("Order not found");
         }
+        public async Task<List<Order>> GetAllOrdersAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.MenuItem)
+                .ToListAsync();
+        }
+        public async Task<Order> UpdateOrderAsync(Order order)
+        {
+            var existingOrder = await _context.Orders.FindAsync(order.Id);
+            if (existingOrder == null)
+            {
+                throw new Exception("Order not found");
+            }
+            existingOrder.CustomerId = order.CustomerId;
+            existingOrder.OrderItems = order.OrderItems;
+            existingOrder.TotalAmount = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+            existingOrder.OrderDate = DateTime.UtcNow;
+            _context.Orders.Update(existingOrder);
+            await _context.SaveChangesAsync();
+            return existingOrder;
+        }
+
+        public async Task DeleteOrderAsync(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                throw new Exception("Order not found");
+            }
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task DeleteMenuItemAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
