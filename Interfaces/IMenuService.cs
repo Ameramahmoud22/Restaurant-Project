@@ -13,6 +13,7 @@ namespace RestaurantSystem.Interfaces
 
         Task UpdateMenuItemAsync(MenuItem menuItem); //update an existing menu item
         Task DeleteMenuItemAsync(int id); //delete a menu item by its ID
+        Task<List<MenuItem>> SearchMenuItemsAsync(string? category, string? name, bool? isAvailable);
 
     }
 }
