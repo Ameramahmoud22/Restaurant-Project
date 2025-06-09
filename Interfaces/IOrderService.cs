@@ -14,5 +14,8 @@ namespace RestaurantSystem.Interfaces
         Task<List<Order>> GetAllOrdersAsync();  // retrieve all orders
         Task<Order> UpdateOrderAsync(Order order);  // update an existing order
         Task DeleteMenuItemAsync(int id);
+
+        Task<List<Order>> GetOrdersByCustomerIdAsync(int customerId); // retrieve orders by customer ID
+
     }
 }

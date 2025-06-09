@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantSystem.Models;
 using RestaurantSystem.Interfaces;
+using RestaurantSystem.Services;
 
 namespace RestaurantSystem.API.Controllers
 {
@@ -9,10 +10,12 @@ namespace RestaurantSystem.API.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IOrderService _orderService; 
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IOrderService orderService) 
         {
             _customerService = customerService;
+            _orderService = orderService; 
         }
 
         // GET: api/customer
@@ -64,6 +67,14 @@ namespace RestaurantSystem.API.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        // GET: api/customer/{id}/orders
+        [HttpGet("{id}/orders")]
+        public async Task<IActionResult> GetCustomerOrders(int id)
+        {
+            var orders = await _orderService.GetOrdersByCustomerIdAsync(id); // Fix: _orderService is now of type IOrderService
+            return Ok(orders);
         }
     }
 }

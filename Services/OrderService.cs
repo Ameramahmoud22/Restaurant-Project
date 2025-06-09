@@ -73,5 +73,14 @@ namespace RestaurantSystem.Services
         {
             throw new NotImplementedException();
         }
+        public async Task<List<Order>> GetOrdersByCustomerIdAsync(int customerId)
+        {
+            return await _context.Orders
+                .Where(o => o.CustomerId == customerId)
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.MenuItem)
+                .ToListAsync();
+        }
     }
 }
