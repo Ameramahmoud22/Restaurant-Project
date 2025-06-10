@@ -10,8 +10,7 @@ namespace RestaurantSystem.Services
     {
         private readonly RestaurantDbContext _context;
 
-
-        //Constructor: uses DI to get the RestaurantDbContext
+        // Constructor: uses DI to get the RestaurantDbContext
         public OrderService(RestaurantDbContext context)
         {
             _context = context;
@@ -34,6 +33,7 @@ namespace RestaurantSystem.Services
                 .ThenInclude(oi => oi.MenuItem)
                 .FirstOrDefaultAsync(o => o.Id == id) ?? throw new Exception("Order not found");
         }
+
         public async Task<List<Order>> GetAllOrdersAsync()
         {
             return await _context.Orders
@@ -42,6 +42,7 @@ namespace RestaurantSystem.Services
                 .ThenInclude(oi => oi.MenuItem)
                 .ToListAsync();
         }
+
         public async Task<Order> UpdateOrderAsync(Order order)
         {
             var existingOrder = await _context.Orders.FindAsync(order.Id);
@@ -49,10 +50,13 @@ namespace RestaurantSystem.Services
             {
                 throw new Exception("Order not found");
             }
+
             existingOrder.CustomerId = order.CustomerId;
             existingOrder.OrderItems = order.OrderItems;
             existingOrder.TotalAmount = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
             existingOrder.OrderDate = DateTime.UtcNow;
+            existingOrder.Status = order.Status;
+
             _context.Orders.Update(existingOrder);
             await _context.SaveChangesAsync();
             return existingOrder;
@@ -65,6 +69,7 @@ namespace RestaurantSystem.Services
             {
                 throw new Exception("Order not found");
             }
+
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
         }
@@ -73,6 +78,7 @@ namespace RestaurantSystem.Services
         {
             throw new NotImplementedException();
         }
+
         public async Task<List<Order>> GetOrdersByCustomerIdAsync(int customerId)
         {
             return await _context.Orders
@@ -81,6 +87,34 @@ namespace RestaurantSystem.Services
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.MenuItem)
                 .ToListAsync();
+        }
+
+        public async Task<Order?> UpdateOrderStatusAsync(int id, OrderStatus status)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return null;
+            }
+
+            order.Status = status;
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<bool> CancelOrderAsync(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null || order.Status == OrderStatus.Completed || order.Status == OrderStatus.Cancelled)
+            {
+                return false; // Cannot cancel completed or already cancelled orders
+            }
+
+            order.Status = OrderStatus.Cancelled;
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
