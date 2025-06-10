@@ -8,5 +8,7 @@
         public decimal TotalAmount { get; set; }
         public required Customer Customer { get; set; } 
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public OrderStatus Status { get; set; } = OrderStatus.Pending; // Default status is Pending
     }
 }
+
