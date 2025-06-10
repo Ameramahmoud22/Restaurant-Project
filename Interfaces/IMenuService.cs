@@ -1,5 +1,4 @@
 ﻿
-//Purpose: Defines operations for managing menu items in your restaurant system.
 
 using RestaurantSystem.Models;
 
