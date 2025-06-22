@@ -59,7 +59,7 @@ namespace RestaurantSystem.API.Controllers
         }
 
         // DELETE: api/order/{id}  
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/ cancel")]
         public async Task<IActionResult> Cancel(int id)
         {
             var cancelled = await _orderService.CancelOrderAsync(id);
